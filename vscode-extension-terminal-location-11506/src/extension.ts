@@ -34,7 +34,7 @@ export class TestTerminalExtension {
         if (terminals.length === 0) {
             return undefined;
         }
-        return terminals[0];
+        return terminals[terminals.length - 1];
     }
 
     protected registerCommands(): void {
@@ -65,11 +65,27 @@ export class TestTerminalExtension {
             })
         );
         this.context.subscriptions.push(
-            vscode.commands.registerCommand(OpenTerminalEditorLocation.id, () => {
-                const editorLocation: vscode.TerminalEditorLocationOptions = {
-                    preserveFocus: true,
-                    viewColumn: vscode.ViewColumn.Beside
+            vscode.commands.registerCommand(OpenTerminalEditorLocation.id, async () => {
+
+                const viewColumnOptions: vscode.QuickPickOptions = {
+                    placeHolder: "Select view column to open terminal:"
+                };
+                const viewColumnPick  = await vscode.window.showQuickPick(Object.keys(vscode.ViewColumn).filter(v => isNaN(Number(v))), viewColumnOptions);
+
+                if (!viewColumnPick) {
+                    return;
                 }
+
+                const preserveFocusOptions: vscode.QuickPickOptions = {
+                    placeHolder: "Preserve focus?"
+                };
+                const preserveFocus: boolean = await vscode.window.showQuickPick(['true', 'false'], preserveFocusOptions) === 'true';
+
+                const editorLocation: vscode.TerminalEditorLocationOptions = {
+                    preserveFocus: preserveFocus,
+                    viewColumn: vscode.ViewColumn[viewColumnPick as keyof typeof vscode.ViewColumn]
+                }
+
                 this.openTerminal(editorLocation)
             })
         );

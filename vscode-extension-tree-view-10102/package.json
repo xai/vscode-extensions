@@ -1,0 +1,94 @@
+{
+	"name": "custom-view-samples",
+	"displayName": "Custom view Samples",
+	"description": "Samples for VSCode's view API",
+	"version": "0.0.1",
+	"publisher": "vscode-samples",
+	"private": true,
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Microsoft/vscode-extension-samples"
+	},
+	"engines": {
+		"vscode": "^1.74.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onLanguage:json",
+		"onLanguage:jsonc"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"views": {
+			"explorer": [
+				{
+					"id": "testView",
+					"name": "Test View"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "testView.reveal",
+				"title": "Test View: Reveal"
+			},
+			{
+				"command": "testView.changeTitle",
+				"title": "Test View: Change Title"
+			},
+			{
+				"command": "testView.refresh",
+				"title": "Refresh",
+				"icon": "$(refresh)",
+				"enablement": "enableRefresh"
+			},
+			{
+				"command": "testView.expandAll",
+				"title": "Expand All",
+				"icon": "$(expand-all)",
+				"enablement": "enableExpandAll"
+			}
+		],
+			"menus": {
+				"view/title": [
+					{
+					"command": "testView.refresh",
+					"when": "view == testView",
+					"group": "navigation@0"
+					},
+					{
+					"command": "testView.expandAll",
+					"when": "view == testView",
+					"group": "navigation@1"
+					}
+				]
+			}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"lint": "eslint \"src/**/*.ts\""
+	},
+	"devDependencies": {
+		"@types/ftp": "^0.3.33",
+		"@types/mkdirp": "^0.5.2",
+		"@types/node": "^16.11.7",
+		"@types/rimraf": "^2.0.2",
+		"@types/vscode": "^1.73.0",
+		"@typescript-eslint/eslint-plugin": "^5.42.0",
+		"@typescript-eslint/parser": "^5.42.0",
+		"eslint": "^8.26.0",
+		"typescript": "^4.8.4"
+	},
+	"dependencies": {
+		"ftp": "^0.3.10",
+		"jsonc-parser": "^0.4.2",
+		"minimist": "^1.2.6",
+		"mkdirp": "^0.5.1",
+		"rimraf": "^2.6.2"
+	}
+}
